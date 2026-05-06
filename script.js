@@ -513,7 +513,15 @@ function closeSuccess() {
 }
 
 // ===== ADMIN PANEL =====
+const ADMIN_PASSWORD = '1610'; // ← o'zingizning parolingizni yozing!
+
 function openAdmin() {
+  const pwd = prompt('🔐 Admin paroli:');
+  if (pwd === null) return;
+  if (pwd !== ADMIN_PASSWORD) {
+    showToast('❌ Parol noto\'g\'ri!');
+    return;
+  }
   renderAdminOrders();
   renderAdminProducts();
   document.getElementById('adminOverlay').style.display = 'flex';
