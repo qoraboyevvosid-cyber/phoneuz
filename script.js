@@ -680,5 +680,22 @@ window.addEventListener('scroll', () => {
   if (h) h.style.boxShadow = window.scrollY > 10 ? '0 2px 20px rgba(0,0,0,.1)' : 'none';
 });
 
+// ===== MAXFIY KOMBINATSIYA =====
+let tapCount = 0;
+let tapTimer;
+
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('logo') ||
+      e.target.closest('.logo')) {
+    tapCount++;
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(() => tapCount = 0, 2000);
+    if (tapCount >= 5) {
+      tapCount = 0;
+      openAdmin();
+    }
+  }
+});
+
 // ===== ISHGA TUSHIRISH =====
 renderProducts();
