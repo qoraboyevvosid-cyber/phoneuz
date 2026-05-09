@@ -2,7 +2,7 @@
 const TELEGRAM_TOKEN = '8462199964:AAEDg89jkJYWHhZ-Wd9qdLz_hCYzX1BgXdw';
 const ADMIN_ID = '7578121895';
 const ADMIN_PASSWORD = '1610';
-const DISCOUNT_CODES = { 'PHONEUZ5':5, 'SALE10':10, 'VIP15':15 };
+const DISCOUNT_CODES = { 'PHONEUZ5':5, 'SALE50':50, 'VIP15':15 };
 
 // ===== DEFAULT MAHSULOTLAR =====
 const defaultProducts = [
