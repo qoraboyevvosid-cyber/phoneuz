@@ -1,23 +1,23 @@
 // ===== SOZLAMALAR =====
-const TELEGRAM_TOKEN = '8462199964:AAEDg89jkJYWHhZ-Wd9qdLz_hCYzX1BgXdw';
+const TELEGRAM_TOKEN = '8462199964:AAFkCZ0JagtUz-2Uoh5P-guLjhUpTxpSJW4';
 const ADMIN_ID = '7578121895';
 const ADMIN_PASSWORD = '1610';
-const DISCOUNT_CODES = { 'PHONEUZ5':5, 'SALE10':10, 'VIP15':15, 'IPHONE50':50 };
+const DISCOUNT_CODES = { 'PHONEUZ5':5, 'SALE10':10, 'VIP15':15 };
 
 // ===== DEFAULT MAHSULOTLAR =====
 const defaultProducts = [
-  { id:1, brand:'Apple', name:'iPhone 15 Pro', emoji:'📱', image:'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg', price:14500000, category:'apple', isNew:true, specs:{Xotira:'256 GB',RAM:'8 GB',Kamera:'48 MP',Batareya:'3274 mAh',Ekran:'6.1"'} },
-  { id:2, brand:'Apple', name:'iPhone 14', emoji:'📱', image:'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-14-1.jpg', price:10200000, category:'apple', isNew:false, specs:{Xotira:'128 GB',RAM:'6 GB',Kamera:'12 MP',Batareya:'3279 mAh',Ekran:'6.1"'} },
-  { id:3, brand:'Apple', name:'iPhone 15 Plus', emoji:'📱', image:'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-plus-1.jpg', price:13800000, category:'apple', isNew:true, specs:{Xotira:'256 GB',RAM:'6 GB',Kamera:'48 MP',Batareya:'4383 mAh',Ekran:'6.7"'} },
-  { id:4, brand:'Samsung', name:'Galaxy S24 Ultra', emoji:'📲', image:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s24-ultra-1.jpg', price:16000000, category:'samsung', isNew:true, specs:{Xotira:'512 GB',RAM:'12 GB',Kamera:'200 MP',Batareya:'5000 mAh',Ekran:'6.8"'} },
-  { id:5, brand:'Samsung', name:'Galaxy A55', emoji:'📲', image:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a55-1.jpg', price:5400000, category:'samsung', isNew:true, specs:{Xotira:'128 GB',RAM:'8 GB',Kamera:'50 MP',Batareya:'5000 mAh',Ekran:'6.6"'} },
-  { id:6, brand:'Samsung', name:'Galaxy S23', emoji:'📲', image:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s23-1.jpg', price:9800000, category:'samsung', isNew:false, specs:{Xotira:'256 GB',RAM:'8 GB',Kamera:'50 MP',Batareya:'3900 mAh',Ekran:'6.1"'} },
-  { id:7, brand:'Xiaomi', name:'Redmi Note 13 Pro', emoji:'🔴', image:'https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-redmi-note-13-pro-1.jpg', price:4200000, category:'xiaomi', isNew:true, specs:{Xotira:'256 GB',RAM:'8 GB',Kamera:'200 MP',Batareya:'5100 mAh',Ekran:'6.67"'} },
-  { id:8, brand:'Xiaomi', name:'Xiaomi 14', emoji:'🔴', image:'https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-14-1.jpg', price:11500000, category:'xiaomi', isNew:true, specs:{Xotira:'512 GB',RAM:'12 GB',Kamera:'50 MP',Batareya:'4610 mAh',Ekran:'6.36"'} },
-  { id:9, brand:'Xiaomi', name:'POCO X6 Pro', emoji:'🔴', image:'https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-poco-x6-pro-1.jpg', price:5800000, category:'xiaomi', isNew:false, specs:{Xotira:'256 GB',RAM:'12 GB',Kamera:'64 MP',Batareya:'5000 mAh',Ekran:'6.67"'} },
-  { id:10, brand:'Realme', name:'Realme 12 Pro+', emoji:'🟡', image:'https://fdn2.gsmarena.com/vv/pics/realme/realme-12-pro-plus-1.jpg', price:4800000, category:'realme', isNew:true, specs:{Xotira:'256 GB',RAM:'12 GB',Kamera:'50 MP',Batareya:'5000 mAh',Ekran:'6.7"'} },
-  { id:11, brand:'Realme', name:'Realme GT 6', emoji:'🟡', image:'https://fdn2.gsmarena.com/vv/pics/realme/realme-gt6-1.jpg', price:7200000, category:'realme', isNew:true, specs:{Xotira:'256 GB',RAM:'16 GB',Kamera:'50 MP',Batareya:'5500 mAh',Ekran:'6.78"'} },
-  { id:12, brand:'Samsung', name:'Galaxy A35', emoji:'📲', image:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a35-1.jpg', price:3900000, category:'samsung', isNew:false, specs:{Xotira:'128 GB',RAM:'6 GB',Kamera:'50 MP',Batareya:'5000 mAh',Ekran:'6.6"'} },
+  { id:1, brand:'Apple', name:'iPhone 15 Pro', emoji:'📱', image:'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg', price:14500000, category:'apple', isNew:true, rating:4.9, reviews:128, specs:{Xotira:'256 GB',RAM:'8 GB',Kamera:'48 MP',Batareya:'3274 mAh',Ekran:'6.1"'} },
+  { id:2, brand:'Apple', name:'iPhone 14', emoji:'📱', image:'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-14-1.jpg', price:10200000, category:'apple', isNew:false, rating:4.7, reviews:95, specs:{Xotira:'128 GB',RAM:'6 GB',Kamera:'12 MP',Batareya:'3279 mAh',Ekran:'6.1"'} },
+  { id:3, brand:'Apple', name:'iPhone 15 Plus', emoji:'📱', image:'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-plus-1.jpg', price:13800000, category:'apple', isNew:true, rating:4.8, reviews:76, specs:{Xotira:'256 GB',RAM:'6 GB',Kamera:'48 MP',Batareya:'4383 mAh',Ekran:'6.7"'} },
+  { id:4, brand:'Samsung', name:'Galaxy S24 Ultra', emoji:'📲', image:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s24-ultra-1.jpg', price:16000000, category:'samsung', isNew:true, rating:4.9, reviews:210, specs:{Xotira:'512 GB',RAM:'12 GB',Kamera:'200 MP',Batareya:'5000 mAh',Ekran:'6.8"'} },
+  { id:5, brand:'Samsung', name:'Galaxy A55', emoji:'📲', image:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a55-1.jpg', price:5400000, category:'samsung', isNew:true, rating:4.5, reviews:63, specs:{Xotira:'128 GB',RAM:'8 GB',Kamera:'50 MP',Batareya:'5000 mAh',Ekran:'6.6"'} },
+  { id:6, brand:'Samsung', name:'Galaxy S23', emoji:'📲', image:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s23-1.jpg', price:9800000, category:'samsung', isNew:false, rating:4.6, reviews:88, specs:{Xotira:'256 GB',RAM:'8 GB',Kamera:'50 MP',Batareya:'3900 mAh',Ekran:'6.1"'} },
+  { id:7, brand:'Xiaomi', name:'Redmi Note 13 Pro', emoji:'🔴', image:'https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-redmi-note-13-pro-1.jpg', price:4200000, category:'xiaomi', isNew:true, rating:4.4, reviews:142, specs:{Xotira:'256 GB',RAM:'8 GB',Kamera:'200 MP',Batareya:'5100 mAh',Ekran:'6.67"'} },
+  { id:8, brand:'Xiaomi', name:'Xiaomi 14', emoji:'🔴', image:'https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-14-1.jpg', price:11500000, category:'xiaomi', isNew:true, rating:4.8, reviews:54, specs:{Xotira:'512 GB',RAM:'12 GB',Kamera:'50 MP',Batareya:'4610 mAh',Ekran:'6.36"'} },
+  { id:9, brand:'Xiaomi', name:'POCO X6 Pro', emoji:'🔴', image:'https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-poco-x6-pro-1.jpg', price:5800000, category:'xiaomi', isNew:false, rating:4.3, reviews:97, specs:{Xotira:'256 GB',RAM:'12 GB',Kamera:'64 MP',Batareya:'5000 mAh',Ekran:'6.67"'} },
+  { id:10, brand:'Realme', name:'Realme 12 Pro+', emoji:'🟡', image:'https://fdn2.gsmarena.com/vv/pics/realme/realme-12-pro-plus-1.jpg', price:4800000, category:'realme', isNew:true, rating:4.4, reviews:41, specs:{Xotira:'256 GB',RAM:'12 GB',Kamera:'50 MP',Batareya:'5000 mAh',Ekran:'6.7"'} },
+  { id:11, brand:'Realme', name:'Realme GT 6', emoji:'🟡', image:'https://fdn2.gsmarena.com/vv/pics/realme/realme-gt6-1.jpg', price:7200000, category:'realme', isNew:true, rating:4.6, reviews:33, specs:{Xotira:'256 GB',RAM:'16 GB',Kamera:'50 MP',Batareya:'5500 mAh',Ekran:'6.78"'} },
+  { id:12, brand:'Samsung', name:'Galaxy A35', emoji:'📲', image:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-a35-1.jpg', price:3900000, category:'samsung', isNew:false, rating:4.3, reviews:72, specs:{Xotira:'128 GB',RAM:'6 GB',Kamera:'50 MP',Batareya:'5000 mAh',Ekran:'6.6"'} },
 ];
 
 // ===== LOCALSTORAGE =====
@@ -45,15 +45,20 @@ let orders = loadOrders();
 let cart = [], wishlist = [];
 let currentFilter = 'all', currentSort = 'default', currentSearch = '';
 let appliedDiscount = 0;
+let minPrice = 0, maxPrice = 20000000, currentMax = 20000000;
+let compareList = [];
 let filteredProducts = [...products];
+let searchTimeout;
 
 // ===== YORDAMCHI =====
 function fmt(p) { return p.toLocaleString('uz-UZ') + ' so\'m'; }
 
-function showToast(msg) {
+function showToast(msg, type='') {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' toast-'+type : '');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 function toggleTheme() {
@@ -64,10 +69,43 @@ function toggleTheme() {
   showToast(dark ? '☀️ Kunduzgi rejim' : '🌙 Tungi rejim');
 }
 
-// ===== QIDIRUV =====
+// ===== YULDUZCHA =====
+function stars(rating) {
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  let s = '';
+  for(let i=0;i<5;i++){
+    if(i<full) s+='★';
+    else if(i===full && half) s+='⯨';
+    else s+='☆';
+  }
+  return `<span class="stars">${s}</span><span class="rating-num">${rating}</span>`;
+}
+
+// ===== QIDIRUV (debounce) =====
 function searchProducts() {
-  currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
-  applyFilterSort();
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    currentSearch = document.getElementById('searchInput').value.toLowerCase().trim();
+    applyFilterSort();
+  }, 200);
+}
+
+// ===== NARX FILTER =====
+function initPriceSlider() {
+  const slider = document.getElementById('priceSlider');
+  const label = document.getElementById('priceLabel');
+  if (!slider) return;
+  const max = Math.max(...products.map(p => p.price));
+  slider.max = max;
+  slider.value = max;
+  currentMax = max;
+  label.textContent = fmt(max);
+  slider.addEventListener('input', () => {
+    currentMax = parseInt(slider.value);
+    label.textContent = fmt(currentMax);
+    applyFilterSort();
+  });
 }
 
 // ===== FILTER & SORT =====
@@ -86,15 +124,31 @@ function sortProducts() {
 function applyFilterSort() {
   filteredProducts = products.filter(p => {
     const mc = currentFilter === 'all' || p.category === currentFilter;
-    const ms = !currentSearch ||
-      p.name.toLowerCase().includes(currentSearch) ||
-      p.brand.toLowerCase().includes(currentSearch);
-    return mc && ms;
+    const ms = !currentSearch || p.name.toLowerCase().includes(currentSearch) || p.brand.toLowerCase().includes(currentSearch);
+    const mp = p.price <= currentMax;
+    return mc && ms && mp;
   });
   if (currentSort === 'price-asc') filteredProducts.sort((a,b) => a.price-b.price);
   else if (currentSort === 'price-desc') filteredProducts.sort((a,b) => b.price-a.price);
   else if (currentSort === 'name-asc') filteredProducts.sort((a,b) => a.name.localeCompare(b.name));
+  else if (currentSort === 'rating') filteredProducts.sort((a,b) => (b.rating||0)-(a.rating||0));
   renderProducts();
+}
+
+// ===== SKELETON LOADING =====
+function showSkeleton() {
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = Array(6).fill(`
+    <div class="product-card skeleton-card">
+      <div class="skeleton sk-img"></div>
+      <div class="p-body">
+        <div class="skeleton sk-line sk-short"></div>
+        <div class="skeleton sk-line"></div>
+        <div class="skeleton sk-line sk-med"></div>
+        <div class="skeleton sk-price"></div>
+        <div class="skeleton sk-btn"></div>
+      </div>
+    </div>`).join('');
 }
 
 // ===== RENDER =====
@@ -105,42 +159,103 @@ function renderProducts() {
   if (cnt) cnt.textContent = filteredProducts.length + ' ta mahsulot';
 
   if (!filteredProducts.length) {
-    grid.innerHTML = `<div class="no-results"><div class="n-ico">🔍</div><h3>Topilmadi</h3><p>Boshqa so'z bilan qidiring</p></div>`;
+    grid.innerHTML = `<div class="no-results"><div class="n-ico">🔍</div><h3>Topilmadi</h3><p>Boshqa so'z yoki filtr bilan qidiring</p></div>`;
     return;
   }
 
   filteredProducts.forEach((p, i) => {
     const inCart = cart.find(c => c.id === p.id);
     const inWish = wishlist.includes(p.id);
+    const inCompare = compareList.includes(p.id);
     const card = document.createElement('div');
     card.className = 'product-card';
     card.style.animationDelay = (i * 0.04) + 's';
     card.innerHTML = `
       <div class="p-img" onclick="openProduct(${p.id})">
-        <img src="${p.image}" alt="${p.name}"
-          onerror="this.style.display='none';this.parentElement.innerHTML+='<span style=font-size:64px>${p.emoji}</span>'"
+        <img src="${p.image}" alt="${p.name}" loading="lazy"
+          onerror="this.style.display='none';this.parentElement.innerHTML+='<span style=font-size:60px>${p.emoji}</span>'"
           style="width:100%;height:100%;object-fit:cover">
         <button class="wish-btn ${inWish?'active':''}"
           onclick="event.stopPropagation();toggleWishlistItem(${p.id})">
           ${inWish?'❤️':'🤍'}
         </button>
+        ${p.isNew?'<span class="img-badge">YANGI</span>':''}
       </div>
       <div class="p-body">
-        ${p.isNew?'<span class="badge-new">YANGI</span>':''}
         <div class="p-brand">${p.brand}</div>
         <div class="p-name" onclick="openProduct(${p.id})">${p.name}</div>
+        <div class="p-rating">${stars(p.rating||4.5)} <span class="review-cnt">(${p.reviews||0})</span></div>
         <div class="p-specs">${Object.entries(p.specs).slice(0,2).map(([k,v])=>`${k}: ${v}`).join(' · ')}</div>
         <div class="p-price">${fmt(p.price)}</div>
         <div class="p-footer">
           <button class="btn-detail" onclick="openProduct(${p.id})">Batafsil</button>
           <button class="btn-cart ${inCart?'added':''}" id="cb${p.id}" onclick="addToCart(${p.id})">
-            ${inCart?'✓ Qo\'shildi':'+ Savatga'}
+            ${inCart?'✓':'+'} ${inCart?'Qo\'shildi':'Savatga'}
           </button>
         </div>
+        <button class="btn-compare ${inCompare?'comparing':''}" onclick="toggleCompare(${p.id})">
+          ${inCompare?'✓ Solishtirishda':'⊕ Solishtirish'}
+        </button>
       </div>`;
     grid.appendChild(card);
   });
+
+  // Scroll animatsiya
+  observeCards();
 }
+
+// ===== SCROLL ANIMATSIYA =====
+function observeCards() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.product-card').forEach(c => observer.observe(c));
+}
+
+// ===== SOLISHTIRISH =====
+function toggleCompare(id) {
+  if (compareList.includes(id)) {
+    compareList = compareList.filter(x => x !== id);
+  } else {
+    if (compareList.length >= 3) { showToast('⚠️ Max 3 ta solishtirish mumkin!'); return; }
+    compareList.push(id);
+  }
+  updateCompareBar();
+  renderProducts();
+}
+
+function updateCompareBar() {
+  const bar = document.getElementById('compareBar');
+  if (!bar) return;
+  if (compareList.length < 2) { bar.style.display='none'; return; }
+  bar.style.display = 'flex';
+  const items = compareList.map(id => {
+    const p = products.find(x => x.id === id);
+    return `<span class="compare-chip">${p.name} <button onclick="toggleCompare(${id})">✕</button></span>`;
+  }).join('');
+  document.getElementById('compareItems').innerHTML = items;
+}
+
+function openCompare() {
+  if (compareList.length < 2) return;
+  const ps = compareList.map(id => products.find(x => x.id === id));
+  const keys = Object.keys(ps[0].specs);
+  let html = `<div class="compare-table-wrap"><table class="compare-table">
+    <tr><th>Xususiyat</th>${ps.map(p=>`<th><img src="${p.image}" style="width:60px;height:60px;object-fit:cover;border-radius:8px"><br>${p.name}<br><strong>${fmt(p.price)}</strong></th>`).join('')}</tr>
+    <tr><td>Reyting</td>${ps.map(p=>`<td>${p.rating}⭐</td>`).join('')}</tr>
+    ${keys.map(k=>`<tr><td>${k}</td>${ps.map(p=>`<td>${p.specs[k]||'—'}</td>`).join('')}</tr>`).join('')}
+    <tr><td></td>${ps.map(p=>`<td><button class="btn-confirm w100" onclick="addToCart(${p.id});closeCompareModal()">Savatga</button></td>`).join('')}</tr>
+  </table></div>`;
+  document.getElementById('compareBody').innerHTML = html;
+  document.getElementById('compareOverlay').style.display = 'flex';
+}
+
+function closeCompareModal() { document.getElementById('compareOverlay').style.display = 'none'; }
 
 // ===== SAVAT =====
 function addToCart(id) {
@@ -150,7 +265,7 @@ function addToCart(id) {
   updateCartUI();
   const btn = document.getElementById('cb'+id);
   if (btn) { btn.textContent = '✓ Qo\'shildi'; btn.classList.add('added'); }
-  showToast('🛒 Savatga qo\'shildi!');
+  showToast('🛒 Savatga qo\'shildi!', 'success');
 }
 
 function removeFromCart(id) {
@@ -183,7 +298,7 @@ function updateCartUI() {
   footEl.style.display = 'block';
   itemsEl.innerHTML = cart.map(item => `
     <div class="cart-item">
-      <img class="cart-item-img" src="${item.image}" onerror="this.style.display='none'">
+      <img class="cart-item-img" src="${item.image}" loading="lazy" onerror="this.style.display='none'">
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
         <div class="cart-item-price">${fmt(item.price)}</div>
@@ -225,7 +340,7 @@ function applyDiscount() {
   if (DISCOUNT_CODES[code]) {
     appliedDiscount = DISCOUNT_CODES[code];
     msg.innerHTML = `<span class="disc-ok">✅ ${appliedDiscount}% chegirma!</span>`;
-    updateCartUI(); showToast(`🎉 ${appliedDiscount}% chegirma!`);
+    updateCartUI(); showToast(`🎉 ${appliedDiscount}% chegirma!`, 'success');
   } else {
     appliedDiscount = 0;
     msg.innerHTML = '<span class="disc-err">❌ Kod noto\'g\'ri</span>';
@@ -240,7 +355,7 @@ function toggleWishlistItem(id) {
     showToast('💔 Sevimlilardan olib tashlandi');
   } else {
     wishlist.push(id);
-    showToast('❤️ Sevimlilarga qo\'shildi!');
+    showToast('❤️ Sevimlilarga qo\'shildi!', 'success');
   }
   updateWishBadge(); renderProducts(); renderWishlist();
 }
@@ -259,9 +374,7 @@ function toggleWishlist() {
   sec.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
-function closeWishlist() {
-  document.getElementById('wishlistSection').classList.remove('visible');
-}
+function closeWishlist() { document.getElementById('wishlistSection').classList.remove('visible'); }
 
 function renderWishlist() {
   const grid = document.getElementById('wishlistGrid');
@@ -277,14 +390,13 @@ function renderWishlist() {
     card.style.animationDelay = (i * 0.04) + 's';
     card.innerHTML = `
       <div class="p-img" onclick="openProduct(${p.id})">
-        <img src="${p.image}" onerror="this.style.display='none'"
-          style="width:100%;height:100%;object-fit:cover">
-        <button class="wish-btn active"
-          onclick="event.stopPropagation();toggleWishlistItem(${p.id})">❤️</button>
+        <img src="${p.image}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover">
+        <button class="wish-btn active" onclick="event.stopPropagation();toggleWishlistItem(${p.id})">❤️</button>
       </div>
       <div class="p-body">
         <div class="p-brand">${p.brand}</div>
         <div class="p-name" onclick="openProduct(${p.id})">${p.name}</div>
+        <div class="p-rating">${stars(p.rating||4.5)}</div>
         <div class="p-price">${fmt(p.price)}</div>
         <div class="p-footer">
           <button class="btn-detail" onclick="openProduct(${p.id})">Batafsil</button>
@@ -302,10 +414,11 @@ function openProduct(id) {
   const p = products.find(x => x.id === id);
   document.getElementById('modalTitle').textContent = p.name;
   document.getElementById('modalImg').innerHTML = `
-    <img src="${p.image}" style="width:100%;height:100%;object-fit:cover"
+    <img src="${p.image}" loading="lazy" style="width:100%;height:100%;object-fit:cover"
       onerror="this.parentElement.textContent='${p.emoji}'">`;
   document.getElementById('modalPrice').textContent = fmt(p.price);
   document.getElementById('modalBadges').innerHTML = p.isNew ? '<span class="badge-new">YANGI</span>' : '';
+  document.getElementById('modalRating').innerHTML = stars(p.rating||4.5) + ` <span class="review-cnt">(${p.reviews||0} sharh)</span>`;
   document.getElementById('modalSpecs').innerHTML = Object.entries(p.specs).map(([k,v]) =>
     `<div class="spec-row"><span class="spec-label">${k}</span><span class="spec-value">${v}</span></div>`
   ).join('');
@@ -314,10 +427,10 @@ function openProduct(id) {
   cb.textContent = inCart ? '✓ Savatda bor' : '+ Savatga qo\'shish';
   cb.onclick = () => { addToCart(id); cb.textContent = '✓ Savatga qo\'shildi'; };
   const wb = document.getElementById('modalWishBtn');
-  wb.textContent = wishlist.includes(id) ? '❤️ Sevimlilardan olib tashlash' : '🤍 Sevimlilarga qo\'shish';
+  wb.textContent = wishlist.includes(id) ? '❤️ Sevimlilardan olib tashlash' : '🤍 Sevimlilarga';
   wb.onclick = () => {
     toggleWishlistItem(id);
-    wb.textContent = wishlist.includes(id) ? '❤️ Sevimlilardan olib tashlash' : '🤍 Sevimlilarga qo\'shish';
+    wb.textContent = wishlist.includes(id) ? '❤️ Sevimlilardan olib tashlash' : '🤍 Sevimlilarga';
   };
   document.getElementById('productOverlay').style.display = 'flex';
 }
@@ -418,7 +531,7 @@ function renderAdminProducts() {
   el.innerHTML = products.map(p => `
     <div class="ap-row">
       <div class="ap-thumb">
-        <img src="${p.image}" onerror="this.style.display='none';this.parentElement.textContent='${p.emoji}'">
+        <img src="${p.image}" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='${p.emoji}'">
       </div>
       <div class="ap-info">
         <div class="ap-name">${p.brand} ${p.name}</div>
@@ -452,12 +565,12 @@ function addProduct() {
     id: Date.now(),
     brand: brand.charAt(0).toUpperCase() + brand.slice(1),
     name, emoji: emojis[brand]||'📱', image, price,
-    category: brand, isNew,
+    category: brand, isNew, rating: 5.0, reviews: 0,
     specs: { Xotira:storage||'—', RAM:ram||'—', Kamera:camera||'—', Batareya:battery||'—' }
   };
   products.unshift(np);
   saveProducts(); applyFilterSort(); renderAdminProducts();
-  showToast('✅ Mahsulot qo\'shildi!');
+  showToast('✅ Mahsulot qo\'shildi!', 'success');
   ['newName','newPrice','newImage','newStorage','newRam','newCamera','newBattery']
     .forEach(id => document.getElementById(id).value = '');
   document.getElementById('newIsNew').checked = false;
@@ -473,10 +586,10 @@ function resetProducts() {
   if (!confirm('Mahsulotlarni asl holatga qaytarasizmi?')) return;
   products = [...defaultProducts];
   saveProducts(); applyFilterSort(); renderAdminProducts();
-  showToast('✅ Mahsulotlar tiklandi!');
+  showToast('✅ Mahsulotlar tiklandi!', 'success');
 }
 
-// ===== MAXFIY KOMBINATSIYA (Logo 5x) =====
+// ===== MAXFIY KOMBINATSIYA =====
 let tapCount = 0, tapTimer;
 document.addEventListener('click', e => {
   if (e.target.closest('.logo')) {
@@ -488,16 +601,20 @@ document.addEventListener('click', e => {
 });
 
 // ===== MODAL YOPISH =====
-['checkoutOverlay','productOverlay','successOverlay','adminOverlay'].forEach(id => {
+['checkoutOverlay','productOverlay','successOverlay','adminOverlay','compareOverlay'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('click', e => { if (e.target === el) el.style.display = 'none'; });
 });
 
-// Header scroll
+// ===== HEADER SCROLL =====
 window.addEventListener('scroll', () => {
   const h = document.getElementById('header');
-  if (h) h.style.boxShadow = scrollY > 10 ? '0 2px 20px rgba(0,0,0,.08)' : 'none';
-});
+  if (h) h.style.boxShadow = scrollY > 10 ? '0 2px 20px rgba(0,0,0,.1)' : 'none';
+}, { passive: true });
 
 // ===== START =====
-renderProducts();
+showSkeleton();
+setTimeout(() => {
+  initPriceSlider();
+  renderProducts();
+}, 600);
