@@ -39,6 +39,7 @@
   </div>
 </header>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-orb orb1"></div>
   <div class="hero-orb orb2"></div>
@@ -46,7 +47,7 @@
   <div class="hero-inner">
     <div class="hero-badge">
       <span class="badge-pulse"></span>
-        O'zbekistondagi rasmiy telefon do'kon
+      O'zbekistoning #1 telefon do'koni
     </div>
     <h1 class="hero-h1">
       <span>Eng yangi</span>
@@ -68,6 +69,7 @@
   </div>
 </section>
 
+<!-- PROMO -->
 <div class="promo-bar">
   <div class="container">
     <div class="promo-inner">
@@ -83,6 +85,7 @@
   </div>
 </div>
 
+<!-- WISHLIST -->
 <section class="wish-section" id="wishlistSection">
   <div class="container">
     <div class="sec-top">
@@ -93,12 +96,21 @@
   </div>
 </section>
 
+<!-- PRODUCTS -->
 <section class="products-section" id="products">
   <div class="container">
     <div class="sec-top">
       <div class="sec-label"><span></span>Telefonlar</div>
       <span class="p-count" id="productCount"></span>
     </div>
+
+    <!-- Narx filtri -->
+    <div class="price-filter">
+      <span class="price-label">Narx:</span>
+      <input type="range" id="priceSlider" min="0" max="20000000" step="100000" class="price-slider">
+      <span class="price-val" id="priceLabel">20 000 000 so'm</span>
+    </div>
+
     <div class="filter-bar">
       <div class="filters">
         <button class="f-btn active" onclick="filterProducts('all',this)">Barchasi</button>
@@ -112,18 +124,21 @@
         <option value="price-asc">Arzondan qimmatga</option>
         <option value="price-desc">Qimmatdan arzonga</option>
         <option value="name-asc">A → Z</option>
+        <option value="rating">Reyting bo'yicha</option>
       </select>
     </div>
+
     <div class="products-grid" id="productsGrid"></div>
   </div>
 </section>
 
+<!-- ABOUT -->
 <section class="about-section" id="about">
   <div class="container">
     <div class="about-grid">
       <div class="about-left">
         <div class="sec-label"><span></span>Biz haqimizda</div>
-        <h2 class="about-h2">Ishonchli do'kon<br><em>2025-yildan beri</em></h2>
+        <h2 class="about-h2">Ishonchli do'kon<br><em>2020-yildan beri</em></h2>
         <p>PhoneUZ — O'zbekiston bozorida ishlab kelayotgan ishonchli telefon do'koni. Barcha mahsulotlarimiz rasmiy va original, 1 yillik kafolat bilan.</p>
         <div class="about-feats">
           <div class="a-feat">✦ Rasmiy mahsulotlar</div>
@@ -142,23 +157,25 @@
   </div>
 </section>
 
+<!-- CONTACT -->
 <section class="contact-section" id="contact">
   <div class="container">
     <div class="sec-label"><span></span>Aloqa</div>
     <h2 class="contact-h2">Biz bilan<br>bog'laning</h2>
     <div class="contact-grid">
-      <div class="c-card"><div class="c-ico">◎</div><div><b>Manzil</b><p>Toshkent, Nurafshon</p></div></div>
-      <div class="c-card"><div class="c-ico">◉</div><div><b>Telefon</b><p>+998 99 066 08 16</p></div></div>
-      <div class="c-card"><div class="c-ico">◈</div><div><b>Telegram</b><p>@ExsonIi</p></div></div>
+      <div class="c-card"><div class="c-ico">◎</div><div><b>Manzil</b><p>Toshkent, Chilonzor</p></div></div>
+      <div class="c-card"><div class="c-ico">◉</div><div><b>Telefon</b><p>+998 90 123 45 67</p></div></div>
+      <div class="c-card"><div class="c-ico">◈</div><div><b>Telegram</b><p>@phoneuz</p></div></div>
       <div class="c-card"><div class="c-ico">◷</div><div><b>Ish vaqti</b><p>9:00 — 21:00</p></div></div>
     </div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <div class="container footer-in">
     <div class="f-brand"><span class="logo-mark">◈</span> PhoneUZ</div>
-    <p class="f-copy">© 2025 PhoneUZ</p>
+    <p class="f-copy">© 2024 PhoneUZ</p>
     <div class="f-links">
       <a href="#products">Katalog</a>
       <a href="#about">Haqimizda</a>
@@ -167,6 +184,14 @@
   </div>
 </footer>
 
+<!-- COMPARE BAR -->
+<div class="compare-bar" id="compareBar" style="display:none">
+  <div class="compare-items" id="compareItems"></div>
+  <button class="btn-primary" onclick="openCompare()">Solishtirish →</button>
+  <button class="btn-cancel-sm" onclick="clearCompare()">✕</button>
+</div>
+
+<!-- CART -->
 <div class="overlay" id="cartOverlay" onclick="toggleCart()"></div>
 <div class="sidebar" id="cartSidebar">
   <div class="sb-head">
@@ -189,6 +214,7 @@
   </div>
 </div>
 
+<!-- CHECKOUT MODAL -->
 <div class="modal-overlay" id="checkoutOverlay" style="display:none">
   <div class="modal">
     <div class="modal-head"><h3>Buyurtma</h3><button class="close-btn" onclick="closeCheckout()">✕</button></div>
@@ -216,6 +242,7 @@
   </div>
 </div>
 
+<!-- SUCCESS -->
 <div class="modal-overlay" id="successOverlay" style="display:none">
   <div class="modal modal-sm">
     <div class="success-ico">✦</div>
@@ -225,6 +252,7 @@
   </div>
 </div>
 
+<!-- PRODUCT MODAL -->
 <div class="modal-overlay" id="productOverlay" style="display:none">
   <div class="modal modal-prod">
     <div class="modal-head"><h3 id="modalTitle"></h3><button class="close-btn" onclick="closeProduct()">✕</button></div>
@@ -233,6 +261,7 @@
         <div class="prod-modal-img" id="modalImg"></div>
         <div class="prod-modal-info">
           <div id="modalBadges"></div>
+          <div id="modalRating" class="modal-rating"></div>
           <div class="m-price" id="modalPrice"></div>
           <div id="modalSpecs"></div>
           <button class="btn-confirm w100" id="modalCartBtn" style="margin-top:14px"></button>
@@ -243,6 +272,15 @@
   </div>
 </div>
 
+<!-- COMPARE MODAL -->
+<div class="modal-overlay" id="compareOverlay" style="display:none">
+  <div class="modal modal-compare">
+    <div class="modal-head"><h3>⊕ Solishtirish</h3><button class="close-btn" onclick="closeCompareModal()">✕</button></div>
+    <div class="modal-body" id="compareBody"></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
 <button id="adminBtn" onclick="openAdmin()" style="display:none">⚙</button>
 <div class="modal-overlay" id="adminOverlay" style="display:none">
   <div class="modal modal-admin">
@@ -293,4 +331,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-

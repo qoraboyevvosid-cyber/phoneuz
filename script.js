@@ -1,10 +1,10 @@
 // ===== SOZLAMALAR =====
-const TELEGRAM_TOKEN = '8462199964:AAFkCZ0JagtUz-2Uoh5P-guLjhUpTxpSJW4';
+const TELEGRAM_TOKEN = '8462199964:AAEFxpkWx8MMz2a5WCqhVtFzXTRlkekafWw';
 const ADMIN_ID = '7578121895';
 const ADMIN_PASSWORD = '1610';
 const DISCOUNT_CODES = { 'PHONEUZ5':5, 'SALE10':10, 'VIP15':15 };
 
-// ===== DEFAULT MAHSULOTLAR =====
+// ===== MAHSULOTLAR =====
 const defaultProducts = [
   { id:1, brand:'Apple', name:'iPhone 15 Pro', emoji:'📱', image:'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg', price:14500000, category:'apple', isNew:true, rating:4.9, reviews:128, specs:{Xotira:'256 GB',RAM:'8 GB',Kamera:'48 MP',Batareya:'3274 mAh',Ekran:'6.1"'} },
   { id:2, brand:'Apple', name:'iPhone 14', emoji:'📱', image:'https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-14-1.jpg', price:10200000, category:'apple', isNew:false, rating:4.7, reviews:95, specs:{Xotira:'128 GB',RAM:'6 GB',Kamera:'12 MP',Batareya:'3279 mAh',Ekran:'6.1"'} },
@@ -26,8 +26,8 @@ function loadProducts() {
     const s = localStorage.getItem('phoneuz_products');
     if (s) return JSON.parse(s);
     localStorage.setItem('phoneuz_products', JSON.stringify(defaultProducts));
-    return defaultProducts;
-  } catch(e) { return defaultProducts; }
+    return [...defaultProducts];
+  } catch(e) { return [...defaultProducts]; }
 }
 function saveProducts() {
   try { localStorage.setItem('phoneuz_products', JSON.stringify(products)); } catch(e) {}
@@ -42,23 +42,21 @@ function saveOrders() {
 // ===== HOLAT =====
 let products = loadProducts();
 let orders = loadOrders();
-let cart = [], wishlist = [];
+let cart = [], wishlist = [], compareList = [];
 let currentFilter = 'all', currentSort = 'default', currentSearch = '';
-let appliedDiscount = 0;
-let minPrice = 0, maxPrice = 20000000, currentMax = 20000000;
-let compareList = [];
+let appliedDiscount = 0, currentMax = 20000000;
 let filteredProducts = [...products];
 let searchTimeout;
 
 // ===== YORDAMCHI =====
 function fmt(p) { return p.toLocaleString('uz-UZ') + ' so\'m'; }
 
-function showToast(msg, type='') {
+function showToast(msg, type) {
   const t = document.getElementById('toast');
   t.textContent = msg;
-  t.className = 'toast show' + (type ? ' toast-'+type : '');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+  t.className = 'toast show' + (type ? ' toast-' + type : '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 function toggleTheme() {
@@ -71,18 +69,19 @@ function toggleTheme() {
 
 // ===== YULDUZCHA =====
 function stars(rating) {
-  const full = Math.floor(rating);
-  const half = rating % 1 >= 0.5;
+  const r = parseFloat(rating) || 4.5;
+  const full = Math.floor(r);
+  const half = (r % 1) >= 0.5;
   let s = '';
-  for(let i=0;i<5;i++){
-    if(i<full) s+='★';
-    else if(i===full && half) s+='⯨';
-    else s+='☆';
+  for (let i = 0; i < 5; i++) {
+    if (i < full) s += '★';
+    else if (i === full && half) s += '⭑';
+    else s += '☆';
   }
-  return `<span class="stars">${s}</span><span class="rating-num">${rating}</span>`;
+  return `<span class="stars">${s}</span><span class="rating-num">${r.toFixed(1)}</span>`;
 }
 
-// ===== QIDIRUV (debounce) =====
+// ===== QIDIRUV =====
 function searchProducts() {
   clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
@@ -91,16 +90,16 @@ function searchProducts() {
   }, 200);
 }
 
-// ===== NARX FILTER =====
+// ===== NARX SLIDER =====
 function initPriceSlider() {
   const slider = document.getElementById('priceSlider');
   const label = document.getElementById('priceLabel');
   if (!slider) return;
-  const max = Math.max(...products.map(p => p.price));
-  slider.max = max;
-  slider.value = max;
-  currentMax = max;
-  label.textContent = fmt(max);
+  const maxP = Math.max(...products.map(p => p.price), 20000000);
+  slider.max = maxP;
+  slider.value = maxP;
+  currentMax = maxP;
+  label.textContent = fmt(maxP);
   slider.addEventListener('input', () => {
     currentMax = parseInt(slider.value);
     label.textContent = fmt(currentMax);
@@ -124,28 +123,30 @@ function sortProducts() {
 function applyFilterSort() {
   filteredProducts = products.filter(p => {
     const mc = currentFilter === 'all' || p.category === currentFilter;
-    const ms = !currentSearch || p.name.toLowerCase().includes(currentSearch) || p.brand.toLowerCase().includes(currentSearch);
+    const ms = !currentSearch ||
+      p.name.toLowerCase().includes(currentSearch) ||
+      p.brand.toLowerCase().includes(currentSearch);
     const mp = p.price <= currentMax;
     return mc && ms && mp;
   });
-  if (currentSort === 'price-asc') filteredProducts.sort((a,b) => a.price-b.price);
-  else if (currentSort === 'price-desc') filteredProducts.sort((a,b) => b.price-a.price);
+  if (currentSort === 'price-asc') filteredProducts.sort((a,b) => a.price - b.price);
+  else if (currentSort === 'price-desc') filteredProducts.sort((a,b) => b.price - a.price);
   else if (currentSort === 'name-asc') filteredProducts.sort((a,b) => a.name.localeCompare(b.name));
-  else if (currentSort === 'rating') filteredProducts.sort((a,b) => (b.rating||0)-(a.rating||0));
+  else if (currentSort === 'rating') filteredProducts.sort((a,b) => (b.rating||0) - (a.rating||0));
   renderProducts();
 }
 
-// ===== SKELETON LOADING =====
+// ===== SKELETON =====
 function showSkeleton() {
   const grid = document.getElementById('productsGrid');
   grid.innerHTML = Array(6).fill(`
-    <div class="product-card skeleton-card">
+    <div class="product-card visible">
       <div class="skeleton sk-img"></div>
       <div class="p-body">
-        <div class="skeleton sk-line sk-short"></div>
-        <div class="skeleton sk-line"></div>
-        <div class="skeleton sk-line sk-med"></div>
-        <div class="skeleton sk-price"></div>
+        <div class="skeleton sk-line sk-short" style="margin-bottom:6px"></div>
+        <div class="skeleton sk-line" style="margin-bottom:6px"></div>
+        <div class="skeleton sk-line sk-med" style="margin-bottom:6px"></div>
+        <div class="skeleton sk-price" style="margin-bottom:8px"></div>
         <div class="skeleton sk-btn"></div>
       </div>
     </div>`).join('');
@@ -159,7 +160,7 @@ function renderProducts() {
   if (cnt) cnt.textContent = filteredProducts.length + ' ta mahsulot';
 
   if (!filteredProducts.length) {
-    grid.innerHTML = `<div class="no-results"><div class="n-ico">🔍</div><h3>Topilmadi</h3><p>Boshqa so'z yoki filtr bilan qidiring</p></div>`;
+    grid.innerHTML = `<div class="no-results"><div class="n-ico">🔍</div><h3>Topilmadi</h3><p>Boshqa filtr yoki so'z bilan qidiring</p></div>`;
     return;
   }
 
@@ -169,52 +170,38 @@ function renderProducts() {
     const inCompare = compareList.includes(p.id);
     const card = document.createElement('div');
     card.className = 'product-card';
-    card.style.animationDelay = (i * 0.04) + 's';
+    card.style.transition = `opacity .4s ease ${i * 0.04}s, transform .4s ease ${i * 0.04}s`;
     card.innerHTML = `
       <div class="p-img" onclick="openProduct(${p.id})">
         <img src="${p.image}" alt="${p.name}" loading="lazy"
-          onerror="this.style.display='none';this.parentElement.innerHTML+='<span style=font-size:60px>${p.emoji}</span>'"
-          style="width:100%;height:100%;object-fit:cover">
-        <button class="wish-btn ${inWish?'active':''}"
+          onerror="this.style.display='none';this.parentElement.innerHTML+='<span style=font-size:56px;padding:20px>${p.emoji}</span>'"
+          style="width:100%;height:100%;object-fit:cover;display:block">
+        <button class="wish-btn ${inWish ? 'active' : ''}"
           onclick="event.stopPropagation();toggleWishlistItem(${p.id})">
-          ${inWish?'❤️':'🤍'}
+          ${inWish ? '❤️' : '🤍'}
         </button>
-        ${p.isNew?'<span class="img-badge">YANGI</span>':''}
+        ${p.isNew ? '<span class="img-badge">YANGI</span>' : ''}
       </div>
       <div class="p-body">
         <div class="p-brand">${p.brand}</div>
         <div class="p-name" onclick="openProduct(${p.id})">${p.name}</div>
-        <div class="p-rating">${stars(p.rating||4.5)} <span class="review-cnt">(${p.reviews||0})</span></div>
-        <div class="p-specs">${Object.entries(p.specs).slice(0,2).map(([k,v])=>`${k}: ${v}`).join(' · ')}</div>
+        <div class="p-rating">${stars(p.rating)} <span class="review-cnt">(${p.reviews || 0})</span></div>
+        <div class="p-specs">${Object.entries(p.specs).slice(0,2).map(([k,v]) => `${k}: ${v}`).join(' · ')}</div>
         <div class="p-price">${fmt(p.price)}</div>
         <div class="p-footer">
           <button class="btn-detail" onclick="openProduct(${p.id})">Batafsil</button>
-          <button class="btn-cart ${inCart?'added':''}" id="cb${p.id}" onclick="addToCart(${p.id})">
-            ${inCart?'✓':'+'} ${inCart?'Qo\'shildi':'Savatga'}
+          <button class="btn-cart ${inCart ? 'added' : ''}" id="cb${p.id}" onclick="addToCart(${p.id})">
+            ${inCart ? '✓ Qo\'shildi' : '+ Savatga'}
           </button>
         </div>
-        <button class="btn-compare ${inCompare?'comparing':''}" onclick="toggleCompare(${p.id})">
-          ${inCompare?'✓ Solishtirishda':'⊕ Solishtirish'}
+        <button class="btn-compare ${inCompare ? 'comparing' : ''}" onclick="toggleCompare(${p.id})">
+          ${inCompare ? '✓ Solishtirishda' : '⊕ Solishtirish'}
         </button>
       </div>`;
     grid.appendChild(card);
+    // Scroll animatsiya
+    requestAnimationFrame(() => card.classList.add('visible'));
   });
-
-  // Scroll animatsiya
-  observeCards();
-}
-
-// ===== SCROLL ANIMATSIYA =====
-function observeCards() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.product-card').forEach(c => observer.observe(c));
 }
 
 // ===== SOLISHTIRISH =====
@@ -222,8 +209,12 @@ function toggleCompare(id) {
   if (compareList.includes(id)) {
     compareList = compareList.filter(x => x !== id);
   } else {
-    if (compareList.length >= 3) { showToast('⚠️ Max 3 ta solishtirish mumkin!'); return; }
+    if (compareList.length >= 3) {
+      showToast('⚠️ Max 3 ta solishtirish mumkin!');
+      return;
+    }
     compareList.push(id);
+    showToast('⊕ Solishtirishga qo\'shildi');
   }
   updateCompareBar();
   renderProducts();
@@ -232,56 +223,96 @@ function toggleCompare(id) {
 function updateCompareBar() {
   const bar = document.getElementById('compareBar');
   if (!bar) return;
-  if (compareList.length < 2) { bar.style.display='none'; return; }
+  if (compareList.length < 2) {
+    bar.style.display = 'none';
+    return;
+  }
   bar.style.display = 'flex';
-  const items = compareList.map(id => {
+  document.getElementById('compareItems').innerHTML = compareList.map(id => {
     const p = products.find(x => x.id === id);
-    return `<span class="compare-chip">${p.name} <button onclick="toggleCompare(${id})">✕</button></span>`;
+    return `<span class="compare-chip">${p.name}<button onclick="toggleCompare(${id})">✕</button></span>`;
   }).join('');
-  document.getElementById('compareItems').innerHTML = items;
+}
+
+function clearCompare() {
+  compareList = [];
+  updateCompareBar();
+  renderProducts();
 }
 
 function openCompare() {
   if (compareList.length < 2) return;
   const ps = compareList.map(id => products.find(x => x.id === id));
   const keys = Object.keys(ps[0].specs);
-  let html = `<div class="compare-table-wrap"><table class="compare-table">
-    <tr><th>Xususiyat</th>${ps.map(p=>`<th><img src="${p.image}" style="width:60px;height:60px;object-fit:cover;border-radius:8px"><br>${p.name}<br><strong>${fmt(p.price)}</strong></th>`).join('')}</tr>
-    <tr><td>Reyting</td>${ps.map(p=>`<td>${p.rating}⭐</td>`).join('')}</tr>
-    ${keys.map(k=>`<tr><td>${k}</td>${ps.map(p=>`<td>${p.specs[k]||'—'}</td>`).join('')}</tr>`).join('')}
-    <tr><td></td>${ps.map(p=>`<td><button class="btn-confirm w100" onclick="addToCart(${p.id});closeCompareModal()">Savatga</button></td>`).join('')}</tr>
-  </table></div>`;
+  const html = `
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <tr>
+          <th>Xususiyat</th>
+          ${ps.map(p => `
+            <th>
+              <img src="${p.image}" class="cmp-img" onerror="this.style.display='none'">
+              <div class="cmp-name">${p.name}</div>
+              <div class="cmp-price">${fmt(p.price)}</div>
+            </th>`).join('')}
+        </tr>
+        <tr>
+          <td>Reyting</td>
+          ${ps.map(p => `<td>${p.rating}⭐ (${p.reviews})</td>`).join('')}
+        </tr>
+        ${keys.map(k => `
+          <tr>
+            <td>${k}</td>
+            ${ps.map(p => `<td>${p.specs[k] || '—'}</td>`).join('')}
+          </tr>`).join('')}
+        <tr>
+          <td></td>
+          ${ps.map(p => `
+            <td>
+              <button class="btn-confirm w100" style="font-size:12px;padding:8px"
+                onclick="addToCart(${p.id});closeCompareModal()">
+                + Savatga
+              </button>
+            </td>`).join('')}
+        </tr>
+      </table>
+    </div>`;
   document.getElementById('compareBody').innerHTML = html;
   document.getElementById('compareOverlay').style.display = 'flex';
 }
 
-function closeCompareModal() { document.getElementById('compareOverlay').style.display = 'none'; }
+function closeCompareModal() {
+  document.getElementById('compareOverlay').style.display = 'none';
+}
 
 // ===== SAVAT =====
 function addToCart(id) {
   const p = products.find(x => x.id === id);
   const ex = cart.find(c => c.id === id);
-  if (ex) ex.qty++; else cart.push({...p, qty:1});
+  if (ex) ex.qty++;
+  else cart.push({ ...p, qty: 1 });
   updateCartUI();
-  const btn = document.getElementById('cb'+id);
+  const btn = document.getElementById('cb' + id);
   if (btn) { btn.textContent = '✓ Qo\'shildi'; btn.classList.add('added'); }
   showToast('🛒 Savatga qo\'shildi!', 'success');
 }
 
 function removeFromCart(id) {
   cart = cart.filter(c => c.id !== id);
-  updateCartUI(); renderProducts();
+  updateCartUI();
+  renderProducts();
 }
 
 function changeQty(id, d) {
   const item = cart.find(c => c.id === id);
   if (!item) return;
   item.qty += d;
-  if (item.qty <= 0) removeFromCart(id); else updateCartUI();
+  if (item.qty <= 0) removeFromCart(id);
+  else updateCartUI();
 }
 
 function updateCartUI() {
-  const total = cart.reduce((s,c) => s+c.qty, 0);
+  const total = cart.reduce((s, c) => s + c.qty, 0);
   document.getElementById('cartCount').textContent = total;
   const itemsEl = document.getElementById('cartItems');
   const footEl = document.getElementById('cartFooter');
@@ -311,7 +342,7 @@ function updateCartUI() {
       </div>
     </div>`).join('');
 
-  const sub = cart.reduce((s,c) => s+c.price*c.qty, 0);
+  const sub = cart.reduce((s, c) => s + c.price * c.qty, 0);
   const disc = Math.round(sub * appliedDiscount / 100);
   document.getElementById('cartTotal').textContent = fmt(sub);
   const dl = document.getElementById('discountLine');
@@ -321,15 +352,18 @@ function updateCartUI() {
     document.getElementById('discountAmount').textContent = '−' + fmt(disc);
     fl.style.display = 'flex';
     document.getElementById('finalTotal').textContent = fmt(sub - disc);
-  } else { dl.style.display='none'; fl.style.display='none'; }
+  } else {
+    dl.style.display = 'none';
+    fl.style.display = 'none';
+  }
 }
 
 function toggleCart() {
   const sb = document.getElementById('cartSidebar');
   const ov = document.getElementById('cartOverlay');
   const open = sb.classList.contains('open');
-  if (open) { sb.classList.remove('open'); ov.style.display='none'; }
-  else { sb.classList.add('open'); ov.style.display='block'; }
+  if (open) { sb.classList.remove('open'); ov.style.display = 'none'; }
+  else { sb.classList.add('open'); ov.style.display = 'block'; }
 }
 
 // ===== CHEGIRMA =====
@@ -340,7 +374,8 @@ function applyDiscount() {
   if (DISCOUNT_CODES[code]) {
     appliedDiscount = DISCOUNT_CODES[code];
     msg.innerHTML = `<span class="disc-ok">✅ ${appliedDiscount}% chegirma!</span>`;
-    updateCartUI(); showToast(`🎉 ${appliedDiscount}% chegirma!`, 'success');
+    updateCartUI();
+    showToast(`🎉 ${appliedDiscount}% chegirma!`, 'success');
   } else {
     appliedDiscount = 0;
     msg.innerHTML = '<span class="disc-err">❌ Kod noto\'g\'ri</span>';
@@ -357,7 +392,9 @@ function toggleWishlistItem(id) {
     wishlist.push(id);
     showToast('❤️ Sevimlilarga qo\'shildi!', 'success');
   }
-  updateWishBadge(); renderProducts(); renderWishlist();
+  updateWishBadge();
+  renderProducts();
+  renderWishlist();
 }
 
 function updateWishBadge() {
@@ -368,40 +405,44 @@ function updateWishBadge() {
 
 function toggleWishlist() {
   const sec = document.getElementById('wishlistSection');
-  if (sec.classList.contains('visible')) { sec.classList.remove('visible'); return; }
+  if (sec.classList.contains('visible')) {
+    sec.classList.remove('visible');
+    return;
+  }
   renderWishlist();
   sec.classList.add('visible');
-  sec.scrollIntoView({ behavior:'smooth', block:'start' });
+  sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function closeWishlist() { document.getElementById('wishlistSection').classList.remove('visible'); }
+function closeWishlist() {
+  document.getElementById('wishlistSection').classList.remove('visible');
+}
 
 function renderWishlist() {
   const grid = document.getElementById('wishlistGrid');
   if (!wishlist.length) {
-    grid.innerHTML = `<div class="no-results"><div class="n-ico">❤️</div><h3>Sevimlilar bo'sh</h3></div>`;
+    grid.innerHTML = `<div class="no-results"><div class="n-ico">❤️</div><h3>Sevimlilar bo'sh</h3><p>Mahsulotlarga ❤️ bosing</p></div>`;
     return;
   }
   grid.innerHTML = '';
   products.filter(p => wishlist.includes(p.id)).forEach((p, i) => {
     const inCart = cart.find(c => c.id === p.id);
     const card = document.createElement('div');
-    card.className = 'product-card';
-    card.style.animationDelay = (i * 0.04) + 's';
+    card.className = 'product-card visible';
     card.innerHTML = `
       <div class="p-img" onclick="openProduct(${p.id})">
-        <img src="${p.image}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover">
+        <img src="${p.image}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
         <button class="wish-btn active" onclick="event.stopPropagation();toggleWishlistItem(${p.id})">❤️</button>
       </div>
       <div class="p-body">
         <div class="p-brand">${p.brand}</div>
         <div class="p-name" onclick="openProduct(${p.id})">${p.name}</div>
-        <div class="p-rating">${stars(p.rating||4.5)}</div>
+        <div class="p-rating">${stars(p.rating)}</div>
         <div class="p-price">${fmt(p.price)}</div>
         <div class="p-footer">
           <button class="btn-detail" onclick="openProduct(${p.id})">Batafsil</button>
-          <button class="btn-cart ${inCart?'added':''}" onclick="addToCart(${p.id})">
-            ${inCart?'✓ Qo\'shildi':'+ Savatga'}
+          <button class="btn-cart ${inCart ? 'added' : ''}" onclick="addToCart(${p.id})">
+            ${inCart ? '✓ Qo\'shildi' : '+ Savatga'}
           </button>
         </div>
       </div>`;
@@ -409,48 +450,62 @@ function renderWishlist() {
   });
 }
 
-// ===== PRODUCT DETAIL =====
+// ===== MAHSULOT DETAIL =====
 function openProduct(id) {
   const p = products.find(x => x.id === id);
+  if (!p) return;
+
   document.getElementById('modalTitle').textContent = p.name;
   document.getElementById('modalImg').innerHTML = `
-    <img src="${p.image}" loading="lazy" style="width:100%;height:100%;object-fit:cover"
-      onerror="this.parentElement.textContent='${p.emoji}'">`;
+    <img src="${p.image}" loading="lazy"
+      style="width:100%;height:100%;object-fit:cover;display:block"
+      onerror="this.parentElement.style.fontSize='64px';this.parentElement.textContent='${p.emoji}'">`;
+
   document.getElementById('modalPrice').textContent = fmt(p.price);
-  document.getElementById('modalBadges').innerHTML = p.isNew ? '<span class="badge-new">YANGI</span>' : '';
-  document.getElementById('modalRating').innerHTML = stars(p.rating||4.5) + ` <span class="review-cnt">(${p.reviews||0} sharh)</span>`;
-  document.getElementById('modalSpecs').innerHTML = Object.entries(p.specs).map(([k,v]) =>
+  document.getElementById('modalBadges').innerHTML = p.isNew ? '<span class="img-badge" style="position:relative;top:auto;left:auto;margin-bottom:8px;display:inline-block">YANGI</span>' : '';
+  document.getElementById('modalRating').innerHTML = stars(p.rating) + ` <span class="review-cnt">(${p.reviews || 0} sharh)</span>`;
+
+  document.getElementById('modalSpecs').innerHTML = Object.entries(p.specs).map(([k, v]) =>
     `<div class="spec-row"><span class="spec-label">${k}</span><span class="spec-value">${v}</span></div>`
   ).join('');
+
   const cb = document.getElementById('modalCartBtn');
   const inCart = cart.find(c => c.id === id);
   cb.textContent = inCart ? '✓ Savatda bor' : '+ Savatga qo\'shish';
   cb.onclick = () => { addToCart(id); cb.textContent = '✓ Savatga qo\'shildi'; };
+
   const wb = document.getElementById('modalWishBtn');
-  wb.textContent = wishlist.includes(id) ? '❤️ Sevimlilardan olib tashlash' : '🤍 Sevimlilarga';
+  wb.textContent = wishlist.includes(id) ? '❤️ Sevimlilardan olib tashlash' : '🤍 Sevimlilarga qo\'shish';
   wb.onclick = () => {
     toggleWishlistItem(id);
-    wb.textContent = wishlist.includes(id) ? '❤️ Sevimlilardan olib tashlash' : '🤍 Sevimlilarga';
+    wb.textContent = wishlist.includes(id) ? '❤️ Sevimlilardan olib tashlash' : '🤍 Sevimlilarga qo\'shish';
   };
+
   document.getElementById('productOverlay').style.display = 'flex';
 }
-function closeProduct() { document.getElementById('productOverlay').style.display = 'none'; }
+
+function closeProduct() {
+  document.getElementById('productOverlay').style.display = 'none';
+}
 
 // ===== CHECKOUT =====
 function openCheckout() {
   toggleCart();
-  const sub = cart.reduce((s,c) => s+c.price*c.qty, 0);
+  const sub = cart.reduce((s, c) => s + c.price * c.qty, 0);
   const disc = Math.round(sub * appliedDiscount / 100);
   let html = cart.map(item =>
-    `<div class="os-item"><span>${item.name} × ${item.qty}</span><span>${fmt(item.price*item.qty)}</span></div>`
+    `<div class="os-item"><span>${item.name} × ${item.qty}</span><span>${fmt(item.price * item.qty)}</span></div>`
   ).join('');
   if (appliedDiscount > 0)
     html += `<div class="os-disc"><span>Chegirma (${appliedDiscount}%)</span><span>−${fmt(disc)}</span></div>`;
-  html += `<div class="os-total"><span>Jami</span><span>${fmt(sub-disc)}</span></div>`;
+  html += `<div class="os-total"><span>Jami</span><span>${fmt(sub - disc)}</span></div>`;
   document.getElementById('orderSummary').innerHTML = html;
   document.getElementById('checkoutOverlay').style.display = 'flex';
 }
-function closeCheckout() { document.getElementById('checkoutOverlay').style.display = 'none'; }
+
+function closeCheckout() {
+  document.getElementById('checkoutOverlay').style.display = 'none';
+}
 
 async function placeOrder() {
   const name = document.getElementById('fullName').value.trim();
@@ -459,56 +514,69 @@ async function placeOrder() {
   const payment = document.querySelector('input[name="pay"]:checked')?.value || 'cash';
   if (!name || !phone || !address) { showToast('⚠️ Barcha maydonlarni to\'ldiring!'); return; }
 
-  const payN = { cash:'Naqd pul', card:'Karta', payme:'Payme', click:'Click' };
-  const sub = cart.reduce((s,c) => s+c.price*c.qty, 0);
+  const payN = { cash: 'Naqd pul', card: 'Karta', payme: 'Payme', click: 'Click' };
+  const sub = cart.reduce((s, c) => s + c.price * c.qty, 0);
   const disc = Math.round(sub * appliedDiscount / 100);
   const final = sub - disc;
-  const items = cart.map(c => `• ${c.name} × ${c.qty} — ${fmt(c.price*c.qty)}`).join('\n');
+  const items = cart.map(c => `• ${c.name} × ${c.qty} — ${fmt(c.price * c.qty)}`).join('\n');
   const dLine = appliedDiscount > 0 ? `\n🏷 Chegirma (${appliedDiscount}%): −${fmt(disc)}` : '';
   const text = `🛒 YANGI BUYURTMA!\n\n👤 ${name}\n📞 ${phone}\n📍 ${address}\n💳 ${payN[payment]}${dLine}\n\n📦 Mahsulotlar:\n${items}\n\n💰 Jami: ${fmt(final)}`;
 
   const btn = document.getElementById('orderBtn');
-  btn.textContent = '⏳ Yuborilmoqda...'; btn.disabled = true;
+  btn.textContent = '⏳ Yuborilmoqda...';
+  btn.disabled = true;
 
   try {
     await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ chat_id:ADMIN_ID, text })
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: ADMIN_ID, text })
     });
   } catch(e) {}
 
   orders.unshift({
-    name, phone, address, payment: payN[payment],
-    items: cart.map(c=>`${c.name} × ${c.qty}`).join(', '),
+    name, phone, address,
+    payment: payN[payment],
+    items: cart.map(c => `${c.name} × ${c.qty}`).join(', '),
     total: fmt(final),
     time: new Date().toLocaleString('uz-UZ')
   });
   saveOrders();
 
-  btn.textContent = '✓ Tasdiqlash'; btn.disabled = false;
+  btn.textContent = '✓ Tasdiqlash';
+  btn.disabled = false;
   closeCheckout();
-  cart = []; appliedDiscount = 0;
-  updateCartUI(); renderProducts();
+  cart = [];
+  appliedDiscount = 0;
+  updateCartUI();
+  renderProducts();
   document.getElementById('successOverlay').style.display = 'flex';
-  ['fullName','phone','address'].forEach(id => document.getElementById(id).value = '');
+  ['fullName', 'phone', 'address'].forEach(id => document.getElementById(id).value = '');
 }
-function closeSuccess() { document.getElementById('successOverlay').style.display = 'none'; }
+
+function closeSuccess() {
+  document.getElementById('successOverlay').style.display = 'none';
+}
 
 // ===== ADMIN =====
 function openAdmin() {
   const pwd = prompt('🔐 Admin paroli:');
   if (pwd === null) return;
   if (pwd !== ADMIN_PASSWORD) { showToast('❌ Parol noto\'g\'ri!'); return; }
-  renderAdminOrders(); renderAdminProducts();
+  renderAdminOrders();
+  renderAdminProducts();
   document.getElementById('adminOverlay').style.display = 'flex';
 }
-function closeAdmin() { document.getElementById('adminOverlay').style.display = 'none'; }
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').style.display = 'none';
+}
 
 function switchTab(name, btn) {
   document.querySelectorAll('.a-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.a-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('tab'+name).classList.add('active');
+  document.getElementById('tab' + name).classList.add('active');
 }
 
 function renderAdminOrders() {
@@ -545,7 +613,9 @@ function deleteProduct(id) {
   if (!confirm('O\'chirishni tasdiqlaysizmi?')) return;
   products = products.filter(p => p.id !== id);
   filteredProducts = filteredProducts.filter(p => p.id !== id);
-  saveProducts(); renderProducts(); renderAdminProducts();
+  saveProducts();
+  renderProducts();
+  renderAdminProducts();
   showToast('🗑 Mahsulot o\'chirildi');
 }
 
@@ -560,32 +630,38 @@ function addProduct() {
   const battery = document.getElementById('newBattery').value.trim();
   const isNew = document.getElementById('newIsNew').checked;
   if (!name || !price) { showToast('⚠️ Nom va narx kiriting!'); return; }
-  const emojis = { apple:'📱', samsung:'📲', xiaomi:'🔴', realme:'🟡' };
+  const emojis = { apple: '📱', samsung: '📲', xiaomi: '🔴', realme: '🟡' };
   const np = {
     id: Date.now(),
     brand: brand.charAt(0).toUpperCase() + brand.slice(1),
-    name, emoji: emojis[brand]||'📱', image, price,
+    name, emoji: emojis[brand] || '📱', image, price,
     category: brand, isNew, rating: 5.0, reviews: 0,
-    specs: { Xotira:storage||'—', RAM:ram||'—', Kamera:camera||'—', Batareya:battery||'—' }
+    specs: { Xotira: storage || '—', RAM: ram || '—', Kamera: camera || '—', Batareya: battery || '—' }
   };
   products.unshift(np);
-  saveProducts(); applyFilterSort(); renderAdminProducts();
+  saveProducts();
+  applyFilterSort();
+  renderAdminProducts();
   showToast('✅ Mahsulot qo\'shildi!', 'success');
-  ['newName','newPrice','newImage','newStorage','newRam','newCamera','newBattery']
+  ['newName', 'newPrice', 'newImage', 'newStorage', 'newRam', 'newCamera', 'newBattery']
     .forEach(id => document.getElementById(id).value = '');
   document.getElementById('newIsNew').checked = false;
 }
 
 function clearOrders() {
   if (!confirm('Barcha buyurtmalarni o\'chirasizmi?')) return;
-  orders = []; saveOrders(); renderAdminOrders();
+  orders = [];
+  saveOrders();
+  renderAdminOrders();
   showToast('🗑 Buyurtmalar tozalandi');
 }
 
 function resetProducts() {
   if (!confirm('Mahsulotlarni asl holatga qaytarasizmi?')) return;
   products = [...defaultProducts];
-  saveProducts(); applyFilterSort(); renderAdminProducts();
+  saveProducts();
+  applyFilterSort();
+  renderAdminProducts();
   showToast('✅ Mahsulotlar tiklandi!', 'success');
 }
 
@@ -601,7 +677,7 @@ document.addEventListener('click', e => {
 });
 
 // ===== MODAL YOPISH =====
-['checkoutOverlay','productOverlay','successOverlay','adminOverlay','compareOverlay'].forEach(id => {
+['checkoutOverlay', 'productOverlay', 'successOverlay', 'adminOverlay', 'compareOverlay'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('click', e => { if (e.target === el) el.style.display = 'none'; });
 });
@@ -617,4 +693,4 @@ showSkeleton();
 setTimeout(() => {
   initPriceSlider();
   renderProducts();
-}, 600);
+}, 500);
